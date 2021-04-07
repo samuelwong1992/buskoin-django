@@ -1,3 +1,11 @@
 from django.contrib import admin
 
-# Register your models here.
+from api.models import *
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin) :
+	list_display = ('__str__',)
+
+@admin.register(Payment)
+class PaymentAdmin(admin.ModelAdmin) :
+	list_display = ('__str__',)

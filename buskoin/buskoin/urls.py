@@ -15,7 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from api import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/login/', views.BuskoinCustomAuthentication.as_view()),
+    path('api/sign-up/', views.create_account),
+    path('api/profile/', views.profile),
+    path('api/create-payment/', views.create_payment_intent),
+    path('api/fetch-profile/<uuid:pk>/', views.fetch_profile),
+    path('api/fetch-payment/<uuid:pk>/', views.fetch_payment),
 ]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
