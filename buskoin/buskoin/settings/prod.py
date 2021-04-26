@@ -1,4 +1,4 @@
-from DriveIt.settings.base import *
+from buskoin.settings.settings import *
 
 DEBUG=False
 
