@@ -9,6 +9,7 @@ stripe = "==2.56.0"
 django-rest-auth = {version = "==0.9.5", extras = ["with_social"]}
 django-cors-headers = "==3.7.0"
 pillow = "*"
+psycopg2-binary = "==2.8.6"
 
 [dev-packages]
 
