@@ -6,7 +6,13 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'buskoin.settings')
+    SERVER_TYPE = os.environ.get('SERVER_TYPE', None)
+    if SERVER_TYPE and SERVER_TYPE == 'production':
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "buskoin.settings.prod")
+    elif SERVER_TYPE and SERVER_TYPE == 'staging':
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "buskoin.settings.staging")
+    else:
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "buskoin.settings.dev")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
