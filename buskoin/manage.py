@@ -8,7 +8,7 @@ def main():
     """Run administrative tasks."""
     SERVER_TYPE = os.environ.get('SERVER_TYPE', None)
     if SERVER_TYPE and SERVER_TYPE == 'production':
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "buskoin.buskoin.settings.prod")
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "buskoin.settings.prod")
     elif SERVER_TYPE and SERVER_TYPE == 'staging':
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "buskoin.settings.staging")
     else:
