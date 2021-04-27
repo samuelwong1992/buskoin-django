@@ -10,6 +10,7 @@ django-rest-auth = {version = "==0.9.5", extras = ["with_social"]}
 django-cors-headers = "==3.7.0"
 pillow = "*"
 psycopg2-binary = "==2.8.6"
+gunicorn = "*"
 
 [dev-packages]
 
@@ -17,7 +18,7 @@ psycopg2-binary = "==2.8.6"
 python_version = "3.9"
 
 [scripts]
-start = "python manage.py runserver 127.0.0.1:8001"
+start = "python manage.py runserver 0.0.0.0:8000"
 makemigrations = "python manage.py makemigrations"
 migrate = "python manage.py migrate"
 collectstatic = "python manage.py collectstatic"
