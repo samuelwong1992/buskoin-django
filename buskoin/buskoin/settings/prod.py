@@ -1,12 +1,12 @@
 from buskoin.settings.settings import *
 
-DEBUG=True
+DEBUG=False
 
 ALLOWED_HOSTS = [
     '128.199.184.32',
 	'localhost',
-	'*.buskoin.com',
+	'api.buskoin.com',
 	'buskoin.com',
 ]
 
-BASE_API_URL = "http://128.199.184.32"
+BASE_API_URL = "http://api.buskoin.com"
