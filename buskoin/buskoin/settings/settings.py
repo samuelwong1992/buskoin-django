@@ -108,8 +108,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-BASE_URL = "http://127.0.0.1:8080/#/"
-
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static/'
 MEDIA_URL = '/media/'
