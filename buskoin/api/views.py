@@ -121,6 +121,31 @@ def create_payment_intent(request) :
 	
 	return Response({'client_secret' : session}, status=status.HTTP_200_OK )
 
+@api_view(('GET',))
+def create_stripe_login(request) :
+	stripe.api_key = "sk_test_51IXzZ1HfGkYzo1kqoRTIZ6a7frvG4gODZP5Hodeshw5jvWuWlo10eRRvK1sNUmypzYNjqmX9KxjwIV9cZYHVNL6o00f8YZV6QC"
+
+	if not request.user.is_authenticated:
+		return Response({'error' : 'Unathenticated.'}, status=status.HTTP_200_OK )
+	
+	profile = Profile.objects.filter(user=request.user)
+	if not profile.exists() :
+		return Response({'error' : 'Profile doesn\'t exist.'}, status=status.HTTP_200_OK )
+
+	try :
+		session = stripe.Account.create_login_link(
+			profile.first().stripe_id,
+		)
+	except stripe.error.InvalidRequestError :
+		session = stripe.AccountLink.create(
+			account=profile.first().stripe_id,
+			refresh_url=settings.BASE_URL + "profile/",
+			return_url=settings.BASE_URL + "profile/",
+			type='account_onboarding',
+		)
+
+	return Response({'client_secret' : session}, status=status.HTTP_200_OK )
+
 @api_view(('GET', 'PATCH'))
 def profile(request) :
 	if not request.user.is_authenticated:

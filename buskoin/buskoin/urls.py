@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/create-payment/', views.create_payment_intent),
     path('api/fetch-profile/<uuid:pk>/', views.fetch_profile),
     path('api/fetch-payment/<uuid:pk>/', views.fetch_payment),
+    path('api/create_stripe_login/', views.create_stripe_login),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
