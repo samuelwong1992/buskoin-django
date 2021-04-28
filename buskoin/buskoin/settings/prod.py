@@ -10,3 +10,8 @@ ALLOWED_HOSTS = [
 ]
 
 BASE_API_URL = "http://api.buskoin.com"
+
+CORS_ALLOWED_ORIGINS = [
+    "http://buskoin.com",
+    "http://www.buskoin.com",
+]
