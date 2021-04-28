@@ -112,5 +112,5 @@ BASE_URL = "http://127.0.0.1:8080/#/"
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static/'
-MEDIA_URL = '/m/'
-MEDIA_ROOT = BASE_DIR / 'media_root/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media/'
