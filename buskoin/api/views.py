@@ -34,7 +34,7 @@ class BuskoinCustomAuthentication(ObtainAuthToken):
 
 @api_view(('POST',))
 def create_account(request) :
-	stripe.api_key = "sk_test_51IXzZ1HfGkYzo1kqoRTIZ6a7frvG4gODZP5Hodeshw5jvWuWlo10eRRvK1sNUmypzYNjqmX9KxjwIV9cZYHVNL6o00f8YZV6QC"
+	stripe.api_key = settings.STRIPE_KEY
 
 	email = request.data.get("email", "")
 	password = request.data.get("password", "")
@@ -49,7 +49,7 @@ def create_account(request) :
 		return Response({'error' : 'The profile already exists.'}, status=status.HTTP_200_OK )
 
 	account = stripe.Account.create(
-		type='express',
+		type='standard',
 		email=email,
 		business_type='individual',
 	)
@@ -72,7 +72,7 @@ def create_account(request) :
 
 @api_view(('POST',))
 def create_payment_intent(request) :
-	stripe.api_key = "sk_test_51IXzZ1HfGkYzo1kqoRTIZ6a7frvG4gODZP5Hodeshw5jvWuWlo10eRRvK1sNUmypzYNjqmX9KxjwIV9cZYHVNL6o00f8YZV6QC"
+	stripe.api_key = settings.STRIPE_KEY
 
 	value = request.POST.get("value", None)
 	if not value :
@@ -81,7 +81,7 @@ def create_payment_intent(request) :
 	value = int(value)*100
 
 	if value < 1 :
-		return Response({'error' : 'Value must be greater than  or equal to 1.'}, status=status.HTTP_200_OK )
+		return Response({'error' : 'Value must be greater than or equal to 1.'}, status=status.HTTP_200_OK )
 
 	uuid = request.POST.get("user", None)
 	if not uuid :
@@ -107,7 +107,7 @@ def create_payment_intent(request) :
 			'images': ["{0}{1}{2}".format(settings.BASE_API_URL, settings.MEDIA_URL, profile.logo)],
 		}],
 		payment_intent_data={
-			'application_fee_amount': 0,
+			'application_fee_amount': int(0.02*value),
 			'transfer_data': {
 				'destination': profile.stripe_id,
 			},
@@ -123,7 +123,7 @@ def create_payment_intent(request) :
 
 @api_view(('GET',))
 def create_stripe_login(request) :
-	stripe.api_key = "sk_test_51IXzZ1HfGkYzo1kqoRTIZ6a7frvG4gODZP5Hodeshw5jvWuWlo10eRRvK1sNUmypzYNjqmX9KxjwIV9cZYHVNL6o00f8YZV6QC"
+	stripe.api_key = settings.STRIPE_KEY
 
 	if not request.user.is_authenticated:
 		return Response({'error' : 'Unathenticated.'}, status=status.HTTP_200_OK )
@@ -139,8 +139,8 @@ def create_stripe_login(request) :
 	except stripe.error.InvalidRequestError :
 		session = stripe.AccountLink.create(
 			account=profile.first().stripe_id,
-			refresh_url=settings.BASE_URL + "login/" + profile.first().email + "/",
-			return_url=settings.BASE_URL + "login/" + profile.first().email + "/",
+			refresh_url=settings.BASE_URL + "login/" + profile.first().user.username + "/",
+			return_url=settings.BASE_URL + "login/" + profile.first().user.username + "/",
 			type='account_onboarding',
 		)
 
@@ -191,7 +191,7 @@ def fetch_payment(request, pk) :
 	if not payment.exists() :
 		return Response({'error' : 'Payment doesn\'t exist.'}, status=status.HTTP_200_OK )
 
-	stripe.api_key = "sk_test_51IXzZ1HfGkYzo1kqoRTIZ6a7frvG4gODZP5Hodeshw5jvWuWlo10eRRvK1sNUmypzYNjqmX9KxjwIV9cZYHVNL6o00f8YZV6QC"
+	stripe.api_key = settings.STRIPE_KEY
 	payment = payment.first()
 
 	pi = stripe.PaymentIntent.retrieve(payment.stripe_id,)
