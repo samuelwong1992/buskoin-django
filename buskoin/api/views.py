@@ -9,7 +9,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 
 from api.models import Profile, Payment
-from api.serializers import ProfileSerializer, PaymentSerializer
+from api.serializers import ProfileSerializer, PaymentSerializer, ProfileSearchSerializer
 import time
 
 class BuskoinCustomAuthentication(ObtainAuthToken): 
@@ -200,3 +200,12 @@ def fetch_payment(request, pk) :
 		return Response({'success': True, 'entertainer': serializer.data, 'value': pi.amount_received/100}, status=status.HTTP_200_OK )
 	else :
 		return Response({'error' : 'Payment was never completed', 'entertainer': serializer.data, 'code' : 1}, status=status.HTTP_200_OK )
+
+@api_view(('POST',))
+def search_profiles(request) :
+	search = request.POST.get('search_text', '')
+
+	profiles = Profile.objects.filter(entertainer_name__icontains=search)
+	serializer = ProfileSearchSerializer(profiles, many=True, context={'request': request})
+
+	return Response({'profiles' : serializer.data}, status=status.HTTP_200_OK )

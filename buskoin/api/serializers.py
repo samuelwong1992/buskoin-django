@@ -8,6 +8,11 @@ class ProfileSerializer(serializers.ModelSerializer) :
 		model = Profile
 		fields = '__all__'
 
+class ProfileSearchSerializer(serializers.ModelSerializer) :
+	class Meta: 
+		model = Profile
+		fields = ('entertainer_name', 'uuid', 'logo',)
+
 class PaymentSerializer(serializers.ModelSerializer) :
 	profile = ProfileSerializer(many=False, read_only=True)
 
